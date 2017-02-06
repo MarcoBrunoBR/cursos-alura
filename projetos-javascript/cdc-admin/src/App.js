@@ -1,18 +1,19 @@
-import React, { Component } from 'react';
-import './css/pure-min.css';
-import './css/side-menu.css';
+import React, { Component } from 'react'
+import './css/pure-min.css'
+import './css/side-menu.css'
 import $ from 'jquery'
-import InputCustomizado from './components/InputCustomizado';
+import InputCustomizado from './components/InputCustomizado'
+import BotaoSubmitCustomizado from './components/BotaoSubmitCustomizado'
 
 class App extends Component {
   constructor() {
-    super();
-    this.state = {lista : [], nome : '', email : '', senha : ''};
+    super()
+    this.state = {lista : [], nome : '', email : '', senha : ''}
 
-    this.enviaForm = this.enviaForm.bind(this);
-    this.setNome = this.setNome.bind(this);
-    this.setEmail = this.setEmail.bind(this);
-    this.setSenha = this.setSenha.bind(this);
+    this.enviaForm = this.enviaForm.bind(this)
+    this.setNome = this.setNome.bind(this)
+    this.setEmail = this.setEmail.bind(this)
+    this.setSenha = this.setSenha.bind(this)
   }
 
   componentDidMount() {
@@ -22,7 +23,7 @@ class App extends Component {
       success: function (resposta) {
         this.setState({lista : resposta})
       }.bind(this)
-    });
+    })
   }
 
   enviaForm(evento) {
@@ -96,10 +97,7 @@ class App extends Component {
                 <InputCustomizado id="email" type="email" name="email" value={this.state.email} onChange={this.setEmail} label="Email" />
                 <InputCustomizado id="senha" type="password" name="senha" value={this.state.senha} onChange={this.setSenha} label="Senha" />
 
-                <div className="pure-control-group">
-                  <label></label>
-                  <button type="submit" className="pure-button pure-button-primary">Gravar</button>
-                </div>
+                <BotaoSubmitCustomizado label="Gravar" />
               </form>
             </div>
 
