@@ -1,25 +1,67 @@
 import React, { Component } from 'react';
-import logo from './logo.svg';
 import './css/pure-min.css';
 import './css/side-menu.css';
 import $ from 'jquery'
+import InputCustomizado from './components/InputCustomizado';
 
 class App extends Component {
   constructor() {
     super();
-    this.state = {lista : []};
+    this.state = {lista : [], nome : '', email : '', senha : ''};
+
+    this.enviaForm = this.enviaForm.bind(this);
+    this.setNome = this.setNome.bind(this);
+    this.setEmail = this.setEmail.bind(this);
+    this.setSenha = this.setSenha.bind(this);
   }
 
   componentDidMount() {
-    console.log('didMount');
     $.ajax({
       url : 'http://cdc-react.herokuapp.com/api/autores',
       dataType : 'json',
       success: function (resposta) {
-        console.log('Chegou a resposta');
         this.setState({lista : resposta})
       }.bind(this)
     });
+  }
+
+  enviaForm(evento) {
+    evento.preventDefault();
+
+    console.log('Nome', this.state.nome);
+    console.log('Email', this.state.email);
+    console.log('Senha', this.state.senha);
+
+    $.ajax({
+      url : 'http://cdc-react.herokuapp.com/api/autores',
+      contentType : 'application/json',
+      dataType : 'json',
+      type : 'POST',
+      data : JSON.stringify({nome : this.state.nome, email : this.state.email, senha : this.state.senha}),
+      success : function (resposta) {
+        console.log(resposta);
+
+        this.setState({lista : resposta});
+      }.bind(this),
+      error : function (resposta) {
+        console.log('error');
+      }
+    });
+  }
+
+  setNome(evento) {
+    console.log('Estado nome:', evento.target.value);
+    this.setState({nome : evento.target.value});
+  }
+
+  setEmail(evento) {
+    console.log('Estado email:', evento.target.value);
+    this.setState({email : evento.target.value});
+  }
+
+  setSenha(evento) {
+    console.log('Estado senha:', evento.target.value);
+    this.setState({senha : evento.target.value});
   }
 
   render() {
@@ -48,19 +90,12 @@ class App extends Component {
 
           <div className="content" id="content">
             <div className="pure-form pure-form-aligned">
-              <form className="pure-form pure-form-aligned">
-                <div className="pure-control-group">
-                  <label htmlFor="nome">Nome</label>
-                  <input id="nome" type="text" name="nome" value=""  />
-                </div>
-                <div className="pure-control-group">
-                  <label htmlFor="email">Email</label>
-                  <input id="email" type="email" name="email" value=""  />
-                </div>
-                <div className="pure-control-group">
-                  <label htmlFor="senha">Senha</label>
-                  <input id="senha" type="password" name="senha"  />
-                </div>
+              <form className="pure-form pure-form-aligned" onSubmit={this.enviaForm} method="POST">
+                <InputCustomizado id="nome" type="text" name="nome" value={this.state.nome} onChange={this.setNome} label="Nome" />
+
+                <InputCustomizado id="email" type="email" name="email" value={this.state.email} onChange={this.setEmail} label="Email" />
+                <InputCustomizado id="senha" type="password" name="senha" value={this.state.senha} onChange={this.setSenha} label="Senha" />
+
                 <div className="pure-control-group">
                   <label></label>
                   <button type="submit" className="pure-button pure-button-primary">Gravar</button>
@@ -82,7 +117,7 @@ class App extends Component {
                       return (
                         <tr key={autor.id}>
                           <td>{autor.nome}</td>
-                          <td>{autor.email}}</td>
+                          <td>{autor.email}</td>
                         </tr>
                       );
                     })
