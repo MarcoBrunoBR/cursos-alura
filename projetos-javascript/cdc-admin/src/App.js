@@ -27,11 +27,7 @@ class App extends Component {
   }
 
   enviaForm(evento) {
-    evento.preventDefault();
-
-    console.log('Nome', this.state.nome);
-    console.log('Email', this.state.email);
-    console.log('Senha', this.state.senha);
+    evento.preventDefault()
 
     $.ajax({
       url : 'http://cdc-react.herokuapp.com/api/autores',
@@ -40,8 +36,6 @@ class App extends Component {
       type : 'POST',
       data : JSON.stringify({nome : this.state.nome, email : this.state.email, senha : this.state.senha}),
       success : function (resposta) {
-        console.log(resposta);
-
         this.setState({lista : resposta});
       }.bind(this),
       error : function (resposta) {
@@ -51,17 +45,14 @@ class App extends Component {
   }
 
   setNome(evento) {
-    console.log('Estado nome:', evento.target.value);
     this.setState({nome : evento.target.value});
   }
 
   setEmail(evento) {
-    console.log('Estado email:', evento.target.value);
     this.setState({email : evento.target.value});
   }
 
   setSenha(evento) {
-    console.log('Estado senha:', evento.target.value);
     this.setState({senha : evento.target.value});
   }
 
